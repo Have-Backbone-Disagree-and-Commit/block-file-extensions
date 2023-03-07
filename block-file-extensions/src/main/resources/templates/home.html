@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--    <script src="script.js"></script>-->
+    <title>파일 확장자 차단</title>
+</head>
+
+<body>
+
+<!-- 고정 확장자 -->
+<div>
+    <label>
+        고정 확장자
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </label>
+    <form id="form_pin_extensions">
+    <label>
+        <input type="checkbox" id="chk_bat" name="bat" th:checked="${chk_bat}"> bat
+    </label>
+    <label>
+        <input type="checkbox" id="chk_cmd" name="cmd" th:checked="${chk_cmd}"> cmd
+    </label>
+    <label>
+        <input type="checkbox" id="chk_com" name="com" th:checked="${chk_com}"> com
+    </label>
+    <label>
+        <input type="checkbox" id="chk_cpl" name="cpl" th:checked="${chk_cpl}"> cpl
+    </label>
+    <label>
+        <input type="checkbox" id="chk_exe" name="exe" th:checked="${chk_exe}"> exe
+    </label>
+    <label>
+        <input type="checkbox" id="chk_scr" name="scr" th:checked="${chk_scr}"> scr
+    </label>
+    <label>
+        <input type="checkbox" id="chk_js" name="js" th:checked="${chk_js}"> js
+    </label>
+    </form>
+</div>
+
+<!-- 커스텀 확장자 -->
+<div>
+    <label>
+        커스텀 확장자
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </label>
+    <label>
+        <input type="text" id="input_extension">
+    </label>
+    <button id="btn_upload">+추가</button>
+</div>
+<div>
+    <label>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </label>
+    <label>
+        <textarea id="textarea"></textarea>
+    </label>
+</div>
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+
+    // 고정 확장자 - checkbox의 [이름], [체크여부] 전송
+      $('input[type="checkbox"]').change(function() {
+        var name = $(this).attr('name')
+        var isChecked = $(this).is(':checked');
+        $.ajax({
+          type: 'POST',
+          url: '/pinExtensions',
+          data: {
+            name : name,
+            isChecked: isChecked
+          },
+          success: function(response) {
+<!--            console.log('체크박스 값이 업데이트되었습니다.');-->
+          },
+          error: function(e) {
+            console.log('에러 발생:', e);
+          }
+        });
+      });
+
+    // 확장자 입력 후  [+추가] 버튼 클릭 시
+    $('#btn_upload').click(function(){
+      var inputVal = $('#input_extension').val();
+      console.log(inputVal);
+   });
+})
+</script>
